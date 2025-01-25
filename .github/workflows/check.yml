@@ -1,0 +1,26 @@
+name: Periodic Check
+
+on:
+  schedule:
+    - cron:  '*/5 * * * *'
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  refresh:
+    # Check for new articles and commit and deploy if needed
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          repository: trovezero/core
+          path: core
+      - name: Run tests
+        run: forge test contracts/test/borrowerOperations.t.sol
