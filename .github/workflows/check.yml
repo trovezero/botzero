@@ -21,7 +21,13 @@ jobs:
       # We should look into dependency caching to ensure the bot doesn't waste too much time
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
-      - name: Checkout
+      - name: Checkout Memzero
+        uses: actions/checkout@v4
+        with:
+          repository: trovezero/memzero
+          token: ${{ secrets.PAT_BOTZERO_WRITES_MEMZERO }}
+          path: memzero
+      - name: Checkout Core
         uses: actions/checkout@v4
         with:
           repository: trovezero/core
@@ -31,5 +37,15 @@ jobs:
       - name: Install dependencies
         run: cd core/contracts && forge install
       - name: Run check
-        run: cd core/contracts && forge script script/Temp.s.sol:GetDebtInfo --rpc-url ${{secrets.MAINNET_RPC_URL}}
+        run: cd core/contracts && forge script script/Temp.s.sol:GetDebtInfo --ffi --rpc-url ${{secrets.MAINNET_RPC_URL}}
+      - name: setup git config
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "bot@github.com"
+      - name: commit
+        working-directory: ./memzero
+        run: |
+          git add archive/
+          git commit -m "Add archive entry"
+          git push origin main
 
