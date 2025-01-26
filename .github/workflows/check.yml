@@ -9,6 +9,8 @@ env:
   ADDRESSES_REGISTRY_C1: "0x38e1F07b954cFaB7239D7acab49997FBaAD96476"
   ADDRESSES_REGISTRY_C2: "0x2d4ef56cb626e9a4c90c156018ba9ce269573c61"
   ADDRESSES_REGISTRY_C3: "0x3b48169809dd827f22c9e0f2d71ff12ea7a94a2f"
+  GIT_AUTHOR_EMAIL: "bot@github.com"
+  GIT_AUTHOR_NAME: "Github Actions Bot"
 
 jobs:
   check:
@@ -38,10 +40,6 @@ jobs:
         run: cd core/contracts && forge install
       - name: Run check
         run: cd core/contracts && forge script script/Temp.s.sol:GetDebtInfo --ffi --rpc-url ${{secrets.MAINNET_RPC_URL}}
-      - name: setup git config
-        run: |
-          git config user.name "GitHub Actions Bot"
-          git config user.email "bot@github.com"
       - name: commit
         working-directory: ./memzero
         run: |
