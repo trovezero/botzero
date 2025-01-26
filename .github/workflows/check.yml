@@ -1,4 +1,4 @@
-name: Periodic Check
+name: Check
 
 on:
   schedule:
@@ -6,21 +6,30 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
+  ADDRESSES_REGISTRY_C1: "0x38e1F07b954cFaB7239D7acab49997FBaAD96476"
+  ADDRESSES_REGISTRY_C2: "0x2d4ef56cb626e9a4c90c156018ba9ce269573c61"
+  ADDRESSES_REGISTRY_C3: "0x3b48169809dd827f22c9e0f2d71ff12ea7a94a2f"
 
 jobs:
-  refresh:
+  check:
     # Check for new articles and commit and deploy if needed
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
+      # We should look into dependency caching to ensure the bot doesn't waste too much time
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
       - name: Checkout
         uses: actions/checkout@v4
         with:
           repository: trovezero/core
+          ref: interest_manager
+          token: ${{ secrets.PAT_BOTZERO_READS_CORE }}
           path: core
-      - name: Run tests
-        run: forge test contracts/test/borrowerOperations.t.sol
+      - name: Install dependencies
+        run: cd core/contracts && forge install
+      - name: Run check
+        run: cd core/contracts && forge script script/Temp.s.sol:GetDebtInfo --rpc-url ${{secrets.MAINNET_RPC_URL}}
+
