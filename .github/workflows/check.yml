@@ -36,9 +36,11 @@ jobs:
           token: ${{ secrets.PAT_BOTZERO_READS_CORE }}
           path: core
       - name: Install dependencies
-        run: cd core/contracts && forge install
+        working-directory: ./core/contracts
+        run: forge install
       - name: Run check
-        run: cd core/contracts && forge script script/RateBot.s.sol:ManageRate --ffi --rpc-url ${{secrets.MAINNET_RPC_URL}}
+        working-directory: ./core/contracts
+        run: forge script script/RateBot.s.sol:ManageRate --ffi --rpc-url ${{secrets.MAINNET_RPC_URL}}
       # - name: setup git config
       #   run: |
       #     git config --global user.name "GitHub Actions Bot"
