@@ -2,7 +2,7 @@ name: Check
 
 on:
   schedule:
-    - cron:  '*/25 * * * *'
+    - cron:  '*/5 * * * *'
 
 env:
   CARGO_TERM_COLOR: always
