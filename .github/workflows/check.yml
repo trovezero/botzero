@@ -37,7 +37,7 @@ jobs:
       - name: Install dependencies
         run: cd core/contracts && forge install
       - name: Run check
-        run: cd core/contracts && forge script script/Temp.s.sol:GetDebtInfo --ffi --rpc-url ${{secrets.MAINNET_RPC_URL}}
+        run: cd core/contracts && forge script script/RateBot.s.sol:ManageRate --ffi --rpc-url ${{secrets.MAINNET_RPC_URL}}
       # - name: setup git config
       #   run: |
       #     git config --global user.name "GitHub Actions Bot"
