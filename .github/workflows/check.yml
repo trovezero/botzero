@@ -9,6 +9,7 @@ env:
   ADDRESSES_REGISTRY_C1: "0x38e1F07b954cFaB7239D7acab49997FBaAD96476"
   ADDRESSES_REGISTRY_C2: "0x2d4ef56cb626e9a4c90c156018ba9ce269573c61"
   ADDRESSES_REGISTRY_C3: "0x3b48169809dd827f22c9e0f2d71ff12ea7a94a2f"
+  CONFIG_PATH: "../../memzero/config/botzero/config.toml"
 
 jobs:
   check:
