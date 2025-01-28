@@ -51,6 +51,8 @@ jobs:
           git config --global user.name "GitHub Actions Bot"
           git config --global user.email "bot@github.com"
           git add archive/
-          git commit -m "Add archive entry"
+          git add actions/
+          git add errors/
+          git commit -m "Add archive, actions and/or error entries"
           git push origin main
 
