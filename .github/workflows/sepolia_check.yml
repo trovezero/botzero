@@ -1,0 +1,63 @@
+name: Check
+
+on:
+  schedule:
+    - cron:  '*/5 * * * *'
+
+env:
+  CARGO_TERM_COLOR: always
+  ADDRESSES_REGISTRY_C1: "0x6700620e8c75d41a7606ef38624e2a4806f264b1"
+  ADDRESSES_REGISTRY_C2: "0x49a69d190413838a32d16f0e266a5e9e140ce93e"
+  ADDRESSES_REGISTRY_C3: "0x2efbe6cc022571d035d35b6eb79e4b182f4575fa"
+  MEMZERO_PATH: "../../memzero/"
+  BOT_ID: "botzero"
+  COL1_CONFIG_ID: "ethereum_sepolia_liquity_eth"
+  COL2_CONFIG_ID: "ethereum_sepolia_liquity_wsteth"
+  COL3_CONFIG_ID: "ethereum_sepolia_liquity_reth"
+
+jobs:
+  check:
+    # Check for new articles and commit and deploy if needed
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      # We should look into dependency caching to ensure the bot doesn't waste too much time
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+      - name: Checkout Memzero
+        uses: actions/checkout@v4
+        with:
+          repository: trovezero/memzero
+          token: ${{ secrets.PAT_BOTZERO_WRITES_MEMZERO }}
+          path: memzero
+      - name: Checkout Core
+        uses: actions/checkout@v4
+        with:
+          repository: trovezero/core
+          ref: main
+          token: ${{ secrets.PAT_BOTZERO_READS_CORE }}
+          path: core
+      - name: Install dependencies
+        working-directory: ./core/contracts
+        run: forge install
+      - name: Run check
+        working-directory: ./core/contracts
+        run: forge script script/RateBot.s.sol:ManageRate --ffi --rpc-url ${{secrets.SEPOLIA_RPC_URL}}
+      # - name: setup git config
+      #   run: |
+      #     git config --global user.name "GitHub Actions Bot"
+      #     git config --global user.email "bot@github.com"
+      - name: commit
+        working-directory: ./memzero
+        run: |
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "bot@github.com"
+          git add archive/
+          git add actions/
+          git add errors/
+          git add config/
+          git commit -m "SEPOLIA: Add config, archive, actions and/or error entries"
+          git push origin main
+
