@@ -11,6 +11,9 @@ env:
   ADDRESSES_REGISTRY_C3: "0x3b48169809dd827f22c9e0f2d71ff12ea7a94a2f"
   MEMZERO_PATH: "../../memzero/"
   BOT_ID: "botzero"
+  COL1_CONFIG_ID: "ethereum_mainnet_liquity_eth"
+  COL2_CONFIG_ID: "ethereum_mainnet_liquity_wsteth"
+  COL3_CONFIG_ID: "ethereum_mainnet_liquity_reth"
 
 jobs:
   check:
