@@ -60,5 +60,7 @@ jobs:
           git add errors/
           git add config/
           git commit -m "SEPOLIA: Add config, archive, actions and/or error entries"
+          : # The pull should prevent most issues with other bots making changes in between fetch and push 
+          git pull --rebase origin main
           git push origin main
 

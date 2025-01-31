@@ -59,5 +59,6 @@ jobs:
           git add errors/
           git add config/
           git commit -m "Add config, archive, actions and/or error entries"
+          : # The pull should prevent most issues with other bots making changes in between fetch and push
           git push origin main
 
