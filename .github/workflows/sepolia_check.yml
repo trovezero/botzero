@@ -45,7 +45,7 @@ jobs:
         run: forge install
       - name: Run check
         working-directory: ./core/contracts
-        run: forge script script/RateBot.s.sol:ManageRate --ffi --rpc-url ${{secrets.SEPOLIA_RPC_URL}}
+        run: forge script script/RateBot.s.sol:ManageRate --ffi --rpc-url ${{secrets.SEPOLIA_RPC_URL}} --broadcast
       # - name: setup git config
       #   run: |
       #     git config --global user.name "GitHub Actions Bot"
