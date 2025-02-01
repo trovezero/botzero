@@ -14,6 +14,7 @@ env:
   COL1_CONFIG_ID: "ethereum_mainnet_liquity_eth"
   COL2_CONFIG_ID: "ethereum_mainnet_liquity_wsteth"
   COL3_CONFIG_ID: "ethereum_mainnet_liquity_reth"
+  RATE_ADMIN: ${{ secrets.MAINNET_RATE_ADMIN }}
 
 jobs:
   check:
@@ -44,7 +45,7 @@ jobs:
         run: forge install
       - name: Run check
         working-directory: ./core/contracts
-        run: forge script script/RateBot.s.sol:ManageRate --ffi --rpc-url ${{secrets.MAINNET_RPC_URL}}
+        run: forge script script/RateBot.s.sol:ManageRate --ffi --rpc-url ${{secrets.MAINNET_RPC_URL}} --broadcast
       # - name: setup git config
       #   run: |
       #     git config --global user.name "GitHub Actions Bot"
