@@ -6,9 +6,6 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
-  ADDRESSES_REGISTRY_C1: "0x6700620e8c75d41a7606ef38624e2a4806f264b1"
-  ADDRESSES_REGISTRY_C2: "0x49a69d190413838a32d16f0e266a5e9e140ce93e"
-  ADDRESSES_REGISTRY_C3: "0x2efbe6cc022571d035d35b6eb79e4b182f4575fa"
   MEMZERO_PATH: "../../memzero/"
   BOT_ID: "botzero_sepolia"
   COL1_CONFIG_ID: "ethereum_sepolia_liquity_eth"
@@ -37,7 +34,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: trovezero/core
-          ref: main
+          ref: more_col_refactoring #main
           token: ${{ secrets.PAT_BOTZERO_READS_CORE }}
           path: core
       - name: Install dependencies
