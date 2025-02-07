@@ -34,7 +34,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: trovezero/core
-          ref: more_col_refactoring #main
+          ref: main
           token: ${{ secrets.PAT_BOTZERO_READS_CORE }}
           path: core
       - name: Install dependencies
