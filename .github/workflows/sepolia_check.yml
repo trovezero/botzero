@@ -12,6 +12,7 @@ env:
   COL2_CONFIG_ID: "ethereum_sepolia_liquity_wsteth"
   COL3_CONFIG_ID: "ethereum_sepolia_liquity_reth"
   RATE_ADMIN: ${{ secrets.SEPOLIA_RATE_ADMIN }}
+  BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
 
 jobs:
   check:
