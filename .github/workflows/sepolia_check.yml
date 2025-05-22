@@ -2,6 +2,9 @@ name: Check Sepolia
 
 # Disabled to save alchemy resources
 on:
+  push:
+      branches:
+        - '**'  # Match all branches
   schedule:
     - cron:  '*/5 * * * *'
 
