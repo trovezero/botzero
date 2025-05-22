@@ -1,6 +1,9 @@
 name: Check Mainnet
 
 on:
+  push:
+      branches:
+        - '**'  # Match all branches
   schedule:
     - cron:  '*/5 * * * *'
 
