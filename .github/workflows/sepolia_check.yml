@@ -1,9 +1,9 @@
 name: Check Sepolia
 
 # Disabled to save alchemy resources
-# on:
-#   schedule:
-#     - cron:  '*/5 * * * *'
+on:
+  schedule:
+    - cron:  '*/5 * * * *'
 
 env:
   CARGO_TERM_COLOR: always
@@ -36,7 +36,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: trovezero/core
-          ref: main
+          ref: conservative_rate_update
           token: ${{ secrets.PAT_BOTZERO_READS_CORE }}
           path: core
       - name: Install dependencies
