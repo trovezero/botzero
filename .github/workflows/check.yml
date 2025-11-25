@@ -64,4 +64,35 @@ jobs:
           : # The pull should prevent most issues with other bots making changes in between fetch and push
           git pull --rebase origin main
           git push origin main
+  keep_alive:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Reset Github Suspension Timer
+        env:
+          GH_TOKEN: ${{ secrets.BOTZERO_WRITES_BOTZERO }}
+          OWNER: ${{ github.repository_owner }}
+          REPO: ${{ github.event.repository.name }}
+        run: |
+          # 1. Get the filename automatically
+          WORKFLOW_FILENAME=$(echo "${{ github.workflow_ref }}" | sed 's/.*\.github\/workflows\///;s/@.*//')
+          echo "Targeting workflow file: $WORKFLOW_FILENAME"
 
+          # 2. Make the API Request
+          # -s: Silent (hide progress bar)
+          # -o response.txt: Save the error message body to a file
+          # -w "%{http_code}": Print ONLY the status code to the variable
+          HTTP_STATUS=$(curl -s -o response.txt -w "%{http_code}" -X PUT \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/$OWNER/$REPO/actions/workflows/$WORKFLOW_FILENAME/enable")
+
+          # 3. Check the Proof
+          if [[ "$HTTP_STATUS" == "204" ]]; then
+            echo "✅ SUCCESS! API returned Status 204."
+            echo "The workflow suspension timer has been reset."
+          else
+            echo "❌ FAILED. API returned Status $HTTP_STATUS."
+            echo "Error details:"
+            cat response.txt
+            exit 1 # Fail the job so you get an email alert
+          fi
