@@ -1,0 +1,42 @@
+name: Weekly Report
+
+on:
+  schedule:
+    - cron: '0 9 * * 1'  # Every Monday at 09:00 UTC
+  workflow_dispatch:       # Allow manual trigger
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Vitrine
+        uses: actions/checkout@v4
+        with:
+          repository: trovezero/vitrine
+          token: ${{ secrets.PAT_BOTZERO_READS_CORE }}
+          path: vitrine
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache Cargo
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            vitrine/target
+          key: vitrine-${{ runner.os }}-${{ hashFiles('vitrine/Cargo.lock') }}
+          restore-keys: vitrine-${{ runner.os }}-
+
+      - name: Build Vitrine
+        working-directory: ./vitrine
+        run: cargo build --release
+
+      - name: Send Report
+        working-directory: ./vitrine
+        run: ./target/release/vitrine --send-email
+        env:
+          MAINNET_JSON_RPC: ${{ secrets.MAINNET_RPC_URL }}
+          BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
+          VITRINE_EMAIL: ${{ secrets.VITRINE_EMAIL }}
