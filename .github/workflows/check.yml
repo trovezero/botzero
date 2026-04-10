@@ -64,6 +64,9 @@ jobs:
           : # The pull should prevent most issues with other bots making changes in between fetch and push
           git pull --rebase origin main
           git push origin main
+      - name: Ping dead man's switch
+        if: success()
+        run: curl -fsS --retry 3 https://hc-ping.com/b8e3fdd5-2121-47dc-b997-27250d2e135a
   keep_alive:
     runs-on: ubuntu-latest
     steps:
